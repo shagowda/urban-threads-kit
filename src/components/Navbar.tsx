@@ -2,13 +2,17 @@ import { Link } from "@tanstack/react-router";
 import { Instagram, Menu, X } from "lucide-react";
 import { useState } from "react";
 
-const navLinks = [
+type NavLink =
+  | { to: "/shop" | "/about" | "/contact"; label: string; params?: undefined }
+  | { to: "/shop/$category"; label: string; params: { category: string } };
+
+const navLinks: NavLink[] = [
   { to: "/shop", label: "Shop" },
-  { to: "/shop/t-shirts", label: "T-Shirts" },
-  { to: "/shop/jackets", label: "Jackets" },
+  { to: "/shop/$category", params: { category: "t-shirts" }, label: "T-Shirts" },
+  { to: "/shop/$category", params: { category: "jackets" }, label: "Jackets" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
-] as const;
+];
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
@@ -21,8 +25,9 @@ export function Navbar() {
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((l) => (
             <Link
-              key={l.to}
-              to={l.to as any}
+              key={l.label}
+              to={l.to}
+              params={l.params as any}
               className="font-condensed uppercase text-sm tracking-widest text-foreground/80 hover:text-accent transition-colors"
               activeProps={{ className: "text-accent" }}
             >
@@ -61,8 +66,9 @@ export function Navbar() {
           <nav className="flex flex-col px-6 py-8 gap-6">
             {navLinks.map((l) => (
               <Link
-                key={l.to}
-                to={l.to as any}
+                key={l.label}
+                to={l.to}
+                params={l.params as any}
                 onClick={() => setOpen(false)}
                 className="font-display text-4xl tracking-wide hover:text-accent"
               >

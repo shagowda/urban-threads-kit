@@ -15,9 +15,9 @@ export function Footer() {
           <h4 className="font-condensed uppercase tracking-widest text-sm text-white/60">Shop</h4>
           <ul className="mt-4 space-y-2 text-sm">
             <li><Link to="/shop" className="hover:text-accent">All Products</Link></li>
-            <li><Link to="/shop/t-shirts" className="hover:text-accent">T-Shirts</Link></li>
-            <li><Link to="/shop/jackets" className="hover:text-accent">Jackets</Link></li>
-            <li><Link to="/shop/jeans" className="hover:text-accent">Jeans</Link></li>
+            <li><Link to="/shop/$category" params={{ category: "t-shirts" }} className="hover:text-accent">T-Shirts</Link></li>
+            <li><Link to="/shop/$category" params={{ category: "jackets" }} className="hover:text-accent">Jackets</Link></li>
+            <li><Link to="/shop/$category" params={{ category: "jeans" }} className="hover:text-accent">Jeans</Link></li>
           </ul>
         </div>
         <div>
