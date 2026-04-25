@@ -257,6 +257,45 @@ function ProductPage() {
         </section>
       )}
 
+      {zoomOpen && (
+        <div
+          className="fixed inset-0 z-[60] bg-primary/95 backdrop-blur-sm grid place-items-center"
+          onClick={() => setZoomOpen(false)}
+        >
+          <button
+            onClick={() => setZoomOpen(false)}
+            className="absolute top-4 right-4 p-3 text-primary-foreground bg-background/10 rounded-full"
+            aria-label="Close zoom"
+          >
+            <X className="h-5 w-5" />
+          </button>
+          <div
+            className="w-full h-full overflow-auto grid place-items-center p-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={product.images[img]}
+              alt={product.name}
+              onClick={() => setZoomScale((s) => (s === 1 ? 2.2 : 1))}
+              style={{ transform: `scale(${zoomScale})`, transformOrigin: "center center" }}
+              className={`max-w-full max-h-full object-contain transition-transform duration-200 ${zoomScale === 1 ? "cursor-zoom-in" : "cursor-zoom-out"}`}
+            />
+          </div>
+          {product.images.length > 1 && (
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2" onClick={(e) => e.stopPropagation()}>
+              {product.images.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setImg(i)}
+                  className={`h-2 rounded-full transition-all ${i === img ? "w-8 bg-primary-foreground" : "w-2 bg-primary-foreground/40"}`}
+                  aria-label={`Image ${i + 1}`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
       {showSize && (
         <div className="fixed inset-0 z-50 bg-primary/70 backdrop-blur-sm grid place-items-center p-4" onClick={() => setShowSize(false)}>
           <div className="bg-card max-w-2xl w-full p-6 relative" onClick={(e) => e.stopPropagation()}>
