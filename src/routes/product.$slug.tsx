@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useState } from "react";
-import { MessageCircle, Truck, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { MessageCircle, Truck, X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
+import useEmblaCarousel from "embla-carousel-react";
 import { ProductCard } from "@/components/ProductCard";
 import { getProduct, products } from "@/data/products";
 import { generateWhatsAppLink, inr } from "@/lib/whatsapp";
