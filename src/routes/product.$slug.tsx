@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useState } from "react";
-import { MessageCircle, Truck, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { MessageCircle, Truck, X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
+import useEmblaCarousel from "embla-carousel-react";
 import { ProductCard } from "@/components/ProductCard";
 import { getProduct, products } from "@/data/products";
 import { generateWhatsAppLink, inr } from "@/lib/whatsapp";
@@ -41,6 +42,30 @@ function ProductPage() {
   const [qty, setQty] = useState(1);
   const [img, setImg] = useState(0);
   const [showSize, setShowSize] = useState(false);
+  const [zoomOpen, setZoomOpen] = useState(false);
+  const [zoomScale, setZoomScale] = useState(1);
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: "start" });
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const onSelect = () => setImg(emblaApi.selectedScrollSnap());
+    emblaApi.on("select", onSelect);
+    onSelect();
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (emblaApi && emblaApi.selectedScrollSnap() !== img) {
+      emblaApi.scrollTo(img);
+    }
+  }, [img, emblaApi]);
+
+  useEffect(() => {
+    if (!zoomOpen) setZoomScale(1);
+  }, [zoomOpen]);
 
   const related = products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4);
 
@@ -57,15 +82,69 @@ function ProductPage() {
 
       <section className="container-x py-8 grid lg:grid-cols-2 gap-10">
         <div>
-          <div className="aspect-[4/5] bg-muted overflow-hidden">
-            <img src={product.images[img]} alt={product.name} className="h-full w-full object-cover" />
+          {/* Mobile: swipeable carousel */}
+          <div className="lg:hidden relative">
+            <div className="overflow-hidden" ref={emblaRef}>
+              <div className="flex">
+                {product.images.map((src, i) => (
+                  <div key={src} className="min-w-0 shrink-0 grow-0 basis-full">
+                    <button
+                      type="button"
+                      onClick={() => setZoomOpen(true)}
+                      className="block w-full aspect-[4/5] bg-muted overflow-hidden"
+                      aria-label="Zoom image"
+                    >
+                      <img src={src} alt={`${product.name} ${i + 1}`} className="h-full w-full object-cover" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <button
+              onClick={() => emblaApi?.scrollPrev()}
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm p-2 rounded-full shadow"
+              aria-label="Previous image"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              onClick={() => emblaApi?.scrollNext()}
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm p-2 rounded-full shadow"
+              aria-label="Next image"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+              {product.images.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => emblaApi?.scrollTo(i)}
+                  className={`h-1.5 rounded-full transition-all ${i === img ? "w-6 bg-primary" : "w-1.5 bg-primary/40"}`}
+                  aria-label={`Go to image ${i + 1}`}
+                />
+              ))}
+            </div>
           </div>
-          <div className="mt-3 flex gap-2">
+
+          {/* Desktop: static main image with tap-to-zoom */}
+          <button
+            type="button"
+            onClick={() => setZoomOpen(true)}
+            className="hidden lg:block relative aspect-[4/5] bg-muted overflow-hidden w-full group cursor-zoom-in"
+            aria-label="Zoom image"
+          >
+            <img src={product.images[img]} alt={product.name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+            <span className="absolute top-3 right-3 bg-background/80 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+              <ZoomIn className="h-4 w-4" />
+            </span>
+          </button>
+
+          <div className="mt-3 flex gap-2 overflow-x-auto">
             {product.images.map((src, i) => (
               <button
                 key={src}
                 onClick={() => setImg(i)}
-                className={`h-20 w-16 overflow-hidden border-2 ${i === img ? "border-primary" : "border-transparent"}`}
+                className={`h-20 w-16 shrink-0 overflow-hidden border-2 ${i === img ? "border-primary" : "border-transparent"}`}
               >
                 <img src={src} alt="" className="h-full w-full object-cover" />
               </button>
@@ -176,6 +255,45 @@ function ProductPage() {
             {related.map((p) => <ProductCard key={p.id} product={p} />)}
           </div>
         </section>
+      )}
+
+      {zoomOpen && (
+        <div
+          className="fixed inset-0 z-[60] bg-primary/95 backdrop-blur-sm grid place-items-center"
+          onClick={() => setZoomOpen(false)}
+        >
+          <button
+            onClick={() => setZoomOpen(false)}
+            className="absolute top-4 right-4 p-3 text-primary-foreground bg-background/10 rounded-full"
+            aria-label="Close zoom"
+          >
+            <X className="h-5 w-5" />
+          </button>
+          <div
+            className="w-full h-full overflow-auto grid place-items-center p-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={product.images[img]}
+              alt={product.name}
+              onClick={() => setZoomScale((s) => (s === 1 ? 2.2 : 1))}
+              style={{ transform: `scale(${zoomScale})`, transformOrigin: "center center" }}
+              className={`max-w-full max-h-full object-contain transition-transform duration-200 ${zoomScale === 1 ? "cursor-zoom-in" : "cursor-zoom-out"}`}
+            />
+          </div>
+          {product.images.length > 1 && (
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2" onClick={(e) => e.stopPropagation()}>
+              {product.images.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setImg(i)}
+                  className={`h-2 rounded-full transition-all ${i === img ? "w-8 bg-primary-foreground" : "w-2 bg-primary-foreground/40"}`}
+                  aria-label={`Image ${i + 1}`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       )}
 
       {showSize && (
