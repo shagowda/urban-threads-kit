@@ -60,6 +60,23 @@ export const products: Product[] = [
     material: "100% Cotton", fit: "Regular",
     isBestSeller: true, inStock: true,
   },
+  {
+    id: "tshirt-005",
+    slug: "heavyweight-oversized-tee-black",
+    name: "Heavyweight Oversized Tee — Black",
+    category: "t-shirts",
+    price: 899,
+    originalPrice: 1299,
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    colors: ["Black"],
+    images: ["/images/products/sample-oversized-tee-black.jpg"],
+    badge: "NEW",
+    description: "Heavyweight oversized tee built for the streets. Garment-washed cotton that gets better with every wear — drop-shoulder cut, boxy fit, all attitude.",
+    material: "100% Combed Cotton, 240 GSM",
+    fit: "Oversized",
+    isNewArrival: true,
+    inStock: true,
+  },
 
   {
     id: "shirt-001", slug: "linen-overshirt-stone", name: "Linen Overshirt — Stone",
