@@ -2,7 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchProductsFromSheet } from "@/lib/sheet";
 import { products as fallbackProducts, type Product } from "@/data/products";
 
-const SHEET_URL = import.meta.env.VITE_GOOGLE_SHEET_URL as string | undefined;
+const SHEET_URL = (import.meta.env.VITE_SHEET_URL ||
+  import.meta.env.VITE_GOOGLE_SHEET_URL) as string | undefined;
 
 async function loadProducts(): Promise<Product[]> {
   if (!SHEET_URL) {
