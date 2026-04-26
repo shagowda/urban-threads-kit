@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ProductCard } from "@/components/ProductCard";
-import { products, categories } from "@/data/products";
+import { ProductGridSkeleton, ProductsErrorState } from "@/components/ProductCardSkeleton";
+import { categories } from "@/data/products";
+import { useProducts } from "@/hooks/useProducts";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -15,8 +17,10 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const newArrivals = products.filter((p) => p.isNewArrival).slice(0, 8);
-  const bestSellers = products.filter((p) => p.isBestSeller).slice(0, 8);
+  const { products, loading, error } = useProducts();
+  const inStock = products.filter((p) => p.inStock);
+  const newArrivals = inStock.filter((p) => p.isNewArrival).slice(0, 8);
+  const bestSellers = inStock.filter((p) => p.isBestSeller).slice(0, 8);
 
   return (
     <div>
@@ -56,9 +60,15 @@ function Index() {
             View all →
           </Link>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-          {newArrivals.map((p) => <ProductCard key={p.id} product={p} />)}
-        </div>
+        {loading ? (
+          <ProductGridSkeleton count={8} />
+        ) : error && products.length === 0 ? (
+          <ProductsErrorState />
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            {newArrivals.map((p) => <ProductCard key={p.id} product={p} />)}
+          </div>
+        )}
       </section>
 
       <div className="hr-rule container-x" />
@@ -98,9 +108,15 @@ function Index() {
             View all →
           </Link>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-          {bestSellers.map((p) => <ProductCard key={p.id} product={p} />)}
-        </div>
+        {loading ? (
+          <ProductGridSkeleton count={8} />
+        ) : error && products.length === 0 ? (
+          <ProductsErrorState />
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            {bestSellers.map((p) => <ProductCard key={p.id} product={p} />)}
+          </div>
+        )}
       </section>
 
       {/* Brand strip */}
