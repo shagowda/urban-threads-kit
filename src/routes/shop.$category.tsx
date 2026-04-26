@@ -1,12 +1,14 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ProductCard } from "@/components/ProductCard";
-import { categories, categoryDescriptions, getByCategory } from "@/data/products";
+import { ProductGridSkeleton, ProductsErrorState } from "@/components/ProductCardSkeleton";
+import { categories, categoryDescriptions } from "@/data/products";
+import { useProductsByCategory } from "@/hooks/useProducts";
 
 export const Route = createFileRoute("/shop/$category")({
   loader: ({ params }) => {
     const cat = categories.find((c) => c.slug === params.category);
     if (!cat) throw notFound();
-    return { cat, items: getByCategory(params.category) };
+    return { cat };
   },
   head: ({ loaderData }) => {
     const name = loaderData?.cat.name ?? "Shop";
@@ -30,7 +32,10 @@ export const Route = createFileRoute("/shop/$category")({
 });
 
 function CategoryPage() {
-  const { cat, items } = Route.useLoaderData();
+  const { cat } = Route.useLoaderData();
+  const { products, loading, error } = useProductsByCategory(cat.slug);
+  const items = products.filter((p) => p.inStock);
+
   return (
     <div>
       <section className="relative h-64 md:h-80 overflow-hidden">
@@ -43,8 +48,14 @@ function CategoryPage() {
         </div>
       </section>
       <section className="container-x py-12">
-        <p className="text-sm text-muted-foreground mb-6">{items.length} products</p>
-        {items.length === 0 ? (
+        <p className="text-sm text-muted-foreground mb-6">
+          {loading ? "Loading…" : `${items.length} products`}
+        </p>
+        {loading ? (
+          <ProductGridSkeleton count={8} />
+        ) : error && products.length === 0 ? (
+          <ProductsErrorState />
+        ) : items.length === 0 ? (
           <p className="text-muted-foreground">Nothing here yet — check back soon.</p>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">

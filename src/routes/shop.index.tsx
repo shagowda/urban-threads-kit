@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { ProductCard } from "@/components/ProductCard";
-import { products } from "@/data/products";
+import { ProductGridSkeleton, ProductsErrorState } from "@/components/ProductCardSkeleton";
+import { useProducts } from "@/hooks/useProducts";
 
 export const Route = createFileRoute("/shop/")({
   head: () => ({
@@ -23,23 +24,30 @@ const SORTS = [
 ] as const;
 
 function ShopPage() {
+  const { products, loading, error } = useProducts();
   const [cats, setCats] = useState<string[]>([]);
   const [sizes, setSizes] = useState<string[]>([]);
+  const [colors, setColors] = useState<string[]>([]);
   const [sort, setSort] = useState<(typeof SORTS)[number]["id"]>("new");
   const [maxPrice, setMaxPrice] = useState(4999);
 
   const allCats = ["t-shirts","shirts","jeans","jackets","ethnic","accessories"];
   const allSizes = ["XS","S","M","L","XL","XXL"];
+  const allColors = useMemo(
+    () => Array.from(new Set(products.flatMap((p) => p.colors))).slice(0, 12),
+    [products],
+  );
 
   const filtered = useMemo(() => {
-    let list = products.filter((p) => p.price <= maxPrice);
+    let list = products.filter((p) => p.inStock && p.price <= maxPrice);
     if (cats.length) list = list.filter((p) => cats.includes(p.category));
     if (sizes.length) list = list.filter((p) => p.sizes.some((s) => sizes.includes(s)));
+    if (colors.length) list = list.filter((p) => p.colors.some((c) => colors.includes(c)));
     if (sort === "asc") list = [...list].sort((a, b) => a.price - b.price);
     if (sort === "desc") list = [...list].sort((a, b) => b.price - a.price);
     if (sort === "pop") list = [...list].sort((a, b) => Number(!!b.isBestSeller) - Number(!!a.isBestSeller));
     return list;
-  }, [cats, sizes, sort, maxPrice]);
+  }, [products, cats, sizes, colors, sort, maxPrice]);
 
   const toggle = (arr: string[], v: string, set: (a: string[]) => void) =>
     set(arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v]);
@@ -50,7 +58,9 @@ function ShopPage() {
         <div>
           <p className="section-label">Catalogue</p>
           <h1 className="font-display text-4xl md:text-5xl mt-2">ALL PRODUCTS</h1>
-          <p className="text-sm text-muted-foreground mt-1">{filtered.length} products</p>
+          <p className="text-sm text-muted-foreground mt-1">
+            {loading ? "Loading…" : `${filtered.length} products`}
+          </p>
         </div>
         <select
           value={sort}
@@ -88,6 +98,22 @@ function ShopPage() {
               ))}
             </div>
           </div>
+          {allColors.length > 0 && (
+            <div>
+              <h3 className="font-condensed uppercase tracking-widest text-sm mb-3">Color</h3>
+              <div className="flex flex-wrap gap-2">
+                {allColors.map((c) => (
+                  <button
+                    key={c}
+                    onClick={() => toggle(colors, c, setColors)}
+                    className={`px-3 py-1.5 text-xs font-condensed tracking-widest border ${colors.includes(c) ? "bg-primary text-primary-foreground border-primary" : "border-border hover:border-primary"}`}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           <div>
             <h3 className="font-condensed uppercase tracking-widest text-sm mb-3">Max price: ₹{maxPrice}</h3>
             <input
@@ -100,7 +126,11 @@ function ShopPage() {
         </aside>
 
         <section>
-          {filtered.length === 0 ? (
+          {loading ? (
+            <ProductGridSkeleton count={9} />
+          ) : error && products.length === 0 ? (
+            <ProductsErrorState />
+          ) : filtered.length === 0 ? (
             <p className="text-muted-foreground">No products match your filters.</p>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">

@@ -1,51 +1,41 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState, useEffect, useMemo } from "react";
 import { MessageCircle, Truck, X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import { ProductCard } from "@/components/ProductCard";
-import { getProduct, products } from "@/data/products";
+import { ProductGridSkeleton, ProductsErrorState } from "@/components/ProductCardSkeleton";
+import { useProducts } from "@/hooks/useProducts";
 import { generateWhatsAppLink, inr } from "@/lib/whatsapp";
 
 export const Route = createFileRoute("/product/$slug")({
-  loader: ({ params }) => {
-    const product = getProduct(params.slug);
-    if (!product) throw notFound();
-    return { product };
-  },
-  head: ({ loaderData }) => {
-    const p = loaderData?.product;
-    if (!p) return {};
-    return {
-      meta: [
-        { title: `${p.name} — SECOCT` },
-        { name: "description", content: p.description },
-        { property: "og:title", content: `${p.name} — SECOCT` },
-        { property: "og:description", content: p.description },
-        { property: "og:image", content: p.images[0] },
-        { property: "og:type", content: "product" },
-      ],
-    };
-  },
   component: ProductPage,
-  notFoundComponent: () => (
-    <div className="container-x py-20 text-center">
-      <h1 className="font-display text-5xl">PRODUCT NOT FOUND</h1>
-      <Link to="/shop" className="btn-primary mt-6 inline-flex">Back to Shop</Link>
-    </div>
-  ),
 });
 
 function ProductPage() {
-  const { product } = Route.useLoaderData();
-  const [size, setSize] = useState(product.sizes[0]);
-  const [color, setColor] = useState(product.colors[0]);
+  const { slug } = Route.useParams();
+  const { products, loading, error } = useProducts();
+  const product = useMemo(
+    () => products.find((p) => p.slug === slug || p.id === slug),
+    [products, slug],
+  );
+
+  // Hooks must be called unconditionally
+  const [size, setSize] = useState<string>("");
+  const [color, setColor] = useState<string>("");
   const [qty, setQty] = useState(1);
   const [img, setImg] = useState(0);
   const [showSize, setShowSize] = useState(false);
   const [zoomOpen, setZoomOpen] = useState(false);
   const [zoomScale, setZoomScale] = useState(1);
-
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: "start" });
+
+  // Initialise size/color when product loads
+  useEffect(() => {
+    if (product) {
+      setSize((s) => s || product.sizes[0] || "");
+      setColor((c) => c || product.colors[0] || "");
+    }
+  }, [product]);
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -67,7 +57,50 @@ function ProductPage() {
     if (!zoomOpen) setZoomScale(1);
   }, [zoomOpen]);
 
-  const related = products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4);
+  // Update <title> client-side once product loads
+  useEffect(() => {
+    if (product && typeof document !== "undefined") {
+      document.title = `${product.name} — SECOCT`;
+    }
+  }, [product]);
+
+  if (loading) {
+    return (
+      <div className="container-x py-10">
+        <div className="grid lg:grid-cols-2 gap-10">
+          <div className="aspect-[4/5] bg-muted animate-pulse" />
+          <div className="space-y-4">
+            <div className="h-6 w-24 bg-muted animate-pulse rounded" />
+            <div className="h-12 w-3/4 bg-muted animate-pulse rounded" />
+            <div className="h-8 w-32 bg-muted animate-pulse rounded" />
+            <div className="h-24 w-full bg-muted animate-pulse rounded" />
+            <div className="h-12 w-full bg-muted animate-pulse rounded" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error && products.length === 0) {
+    return (
+      <div className="container-x py-20">
+        <ProductsErrorState />
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="container-x py-20 text-center">
+        <h1 className="font-display text-5xl">PRODUCT NOT FOUND</h1>
+        <Link to="/shop" className="btn-primary mt-6 inline-flex">Back to Shop</Link>
+      </div>
+    );
+  }
+
+  const related = products
+    .filter((p) => p.category === product.category && p.id !== product.id && p.inStock)
+    .slice(0, 4);
 
   return (
     <div>
@@ -100,30 +133,34 @@ function ProductPage() {
                 ))}
               </div>
             </div>
-            <button
-              onClick={() => emblaApi?.scrollPrev()}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm p-2 rounded-full shadow"
-              aria-label="Previous image"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-            <button
-              onClick={() => emblaApi?.scrollNext()}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm p-2 rounded-full shadow"
-              aria-label="Next image"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-              {product.images.map((_, i) => (
+            {product.images.length > 1 && (
+              <>
                 <button
-                  key={i}
-                  onClick={() => emblaApi?.scrollTo(i)}
-                  className={`h-1.5 rounded-full transition-all ${i === img ? "w-6 bg-primary" : "w-1.5 bg-primary/40"}`}
-                  aria-label={`Go to image ${i + 1}`}
-                />
-              ))}
-            </div>
+                  onClick={() => emblaApi?.scrollPrev()}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm p-2 rounded-full shadow"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  onClick={() => emblaApi?.scrollNext()}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm p-2 rounded-full shadow"
+                  aria-label="Next image"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                  {product.images.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => emblaApi?.scrollTo(i)}
+                      className={`h-1.5 rounded-full transition-all ${i === img ? "w-6 bg-primary" : "w-1.5 bg-primary/40"}`}
+                      aria-label={`Go to image ${i + 1}`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
           </div>
 
           {/* Desktop: static main image with tap-to-zoom */}
@@ -139,17 +176,19 @@ function ProductPage() {
             </span>
           </button>
 
-          <div className="mt-3 flex gap-2 overflow-x-auto">
-            {product.images.map((src, i) => (
-              <button
-                key={src}
-                onClick={() => setImg(i)}
-                className={`h-20 w-16 shrink-0 overflow-hidden border-2 ${i === img ? "border-primary" : "border-transparent"}`}
-              >
-                <img src={src} alt="" className="h-full w-full object-cover" />
-              </button>
-            ))}
-          </div>
+          {product.images.length > 1 && (
+            <div className="mt-3 flex gap-2 overflow-x-auto">
+              {product.images.map((src, i) => (
+                <button
+                  key={src}
+                  onClick={() => setImg(i)}
+                  className={`h-20 w-16 shrink-0 overflow-hidden border-2 ${i === img ? "border-primary" : "border-transparent"}`}
+                >
+                  <img src={src} alt="" className="h-full w-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div>
@@ -169,46 +208,50 @@ function ProductPage() {
           </div>
 
           <div className="mt-3 inline-flex items-center gap-2 text-sm">
-            <span className="h-2 w-2 rounded-full bg-whatsapp" />
+            <span className={`h-2 w-2 rounded-full ${product.inStock ? "bg-whatsapp" : "bg-destructive"}`} />
             <span className="font-condensed uppercase tracking-widest text-xs">
               {product.inStock ? "In Stock" : "Sold Out"}
             </span>
           </div>
 
-          <div className="mt-6">
-            <p className="font-condensed uppercase tracking-widest text-xs mb-2">Color: <span className="text-foreground">{color}</span></p>
-            <div className="flex gap-2">
-              {product.colors.map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setColor(c)}
-                  className={`px-3 py-1.5 text-xs font-condensed tracking-widest border ${color === c ? "bg-primary text-primary-foreground border-primary" : "border-border hover:border-primary"}`}
-                >
-                  {c}
-                </button>
-              ))}
+          {product.colors.length > 0 && (
+            <div className="mt-6">
+              <p className="font-condensed uppercase tracking-widest text-xs mb-2">Color: <span className="text-foreground">{color}</span></p>
+              <div className="flex gap-2">
+                {product.colors.map((c) => (
+                  <button
+                    key={c}
+                    onClick={() => setColor(c)}
+                    className={`px-3 py-1.5 text-xs font-condensed tracking-widest border ${color === c ? "bg-primary text-primary-foreground border-primary" : "border-border hover:border-primary"}`}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
-          <div className="mt-5">
-            <div className="flex items-center justify-between mb-2">
-              <p className="font-condensed uppercase tracking-widest text-xs">Size: <span className="text-foreground">{size}</span></p>
-              <button onClick={() => setShowSize(true)} className="text-xs font-condensed uppercase tracking-widest underline hover:text-accent">
-                Size Guide
-              </button>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {product.sizes.map((s) => (
-                <button
-                  key={s}
-                  onClick={() => setSize(s)}
-                  className={`min-w-12 px-3 py-2 text-sm font-condensed tracking-widest border ${size === s ? "bg-primary text-primary-foreground border-primary" : "border-border hover:border-primary"}`}
-                >
-                  {s}
+          {product.sizes.length > 0 && (
+            <div className="mt-5">
+              <div className="flex items-center justify-between mb-2">
+                <p className="font-condensed uppercase tracking-widest text-xs">Size: <span className="text-foreground">{size}</span></p>
+                <button onClick={() => setShowSize(true)} className="text-xs font-condensed uppercase tracking-widest underline hover:text-accent">
+                  Size Guide
                 </button>
-              ))}
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {product.sizes.map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => setSize(s)}
+                    className={`min-w-12 px-3 py-2 text-sm font-condensed tracking-widest border ${size === s ? "bg-primary text-primary-foreground border-primary" : "border-border hover:border-primary"}`}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="mt-5">
             <p className="font-condensed uppercase tracking-widest text-xs mb-2">Quantity</p>
@@ -220,7 +263,7 @@ function ProductPage() {
           </div>
 
           <a
-            href={generateWhatsAppLink({ productName: product.name, size, color, qty })}
+            href={generateWhatsAppLink({ productName: product.name, size, color, qty, price: product.price * qty })}
             target="_blank"
             rel="noreferrer"
             className="btn-primary w-full mt-6 text-base py-4"
@@ -228,18 +271,26 @@ function ProductPage() {
             <MessageCircle className="h-5 w-5" /> Order on WhatsApp
           </a>
 
-          <p className="mt-6 text-foreground/80 leading-relaxed">{product.description}</p>
+          {product.description && (
+            <p className="mt-6 text-foreground/80 leading-relaxed">{product.description}</p>
+          )}
 
-          <div className="mt-6 grid grid-cols-2 gap-3 text-sm">
-            <div className="border border-border p-3">
-              <p className="font-condensed uppercase tracking-widest text-xs text-muted-foreground">Material</p>
-              <p className="mt-1">{product.material}</p>
+          {(product.material || product.fit) && (
+            <div className="mt-6 grid grid-cols-2 gap-3 text-sm">
+              {product.material && (
+                <div className="border border-border p-3">
+                  <p className="font-condensed uppercase tracking-widest text-xs text-muted-foreground">Material</p>
+                  <p className="mt-1">{product.material}</p>
+                </div>
+              )}
+              {product.fit && (
+                <div className="border border-border p-3">
+                  <p className="font-condensed uppercase tracking-widest text-xs text-muted-foreground">Fit</p>
+                  <p className="mt-1">{product.fit}</p>
+                </div>
+              )}
             </div>
-            <div className="border border-border p-3">
-              <p className="font-condensed uppercase tracking-widest text-xs text-muted-foreground">Fit</p>
-              <p className="mt-1">{product.fit}</p>
-            </div>
-          </div>
+          )}
 
           <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
             <Truck className="h-4 w-4" />
@@ -251,9 +302,13 @@ function ProductPage() {
       {related.length > 0 && (
         <section className="container-x py-14">
           <h2 className="font-display text-3xl md:text-4xl mb-6">YOU MAY ALSO LIKE</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {related.map((p) => <ProductCard key={p.id} product={p} />)}
-          </div>
+          {loading ? (
+            <ProductGridSkeleton count={4} />
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              {related.map((p) => <ProductCard key={p.id} product={p} />)}
+            </div>
+          )}
         </section>
       )}
 
