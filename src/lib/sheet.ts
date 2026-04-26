@@ -80,39 +80,53 @@ function headerIndex(headers: string[]): Record<string, number> {
   return map;
 }
 
+/** Try multiple header aliases for the same logical field. */
+function pick(row: string[], idx: Record<string, number>, ...keys: string[]): string {
+  for (const k of keys) {
+    const i = idx[k.toLowerCase()];
+    if (i !== undefined) {
+      const v = (row[i] ?? "").trim();
+      if (v) return v;
+    }
+  }
+  return "";
+}
+
 export function rowsToProducts(rows: string[][]): Product[] {
   if (rows.length < 2) return [];
   const [headerRow, ...dataRows] = rows;
   const idx = headerIndex(headerRow);
 
-  const get = (row: string[], key: string) => {
-    const i = idx[key.toLowerCase()];
-    return i === undefined ? "" : (row[i] ?? "").trim();
-  };
-
   const products: Product[] = [];
 
   for (const row of dataRows) {
-    const id = get(row, "id");
-    const name = get(row, "name");
+    const id = pick(row, idx, "id", "product id");
+    const name = pick(row, idx, "name", "product name");
     if (!id || !name) continue;
 
-    const priceNum = Number(get(row, "price").replace(/[^\d.]/g, ""));
+    const priceRaw = pick(row, idx, "price", "price ₹", "price (₹)");
+    const priceNum = Number(priceRaw.replace(/[^\d.]/g, ""));
     if (!Number.isFinite(priceNum) || priceNum <= 0) continue;
 
-    const originalPriceRaw = get(row, "originalPrice") || get(row, "originalprice");
+    const originalPriceRaw = pick(row, idx, "originalPrice", "originalprice", "original price", "original price ₹");
     const originalPriceNum = originalPriceRaw
       ? Number(originalPriceRaw.replace(/[^\d.]/g, ""))
       : undefined;
 
-    const categoryRaw = get(row, "category").toLowerCase();
+    const categoryRaw = pick(row, idx, "category").toLowerCase();
     const category = (ALLOWED_CATEGORIES.has(categoryRaw) ? categoryRaw : "t-shirts") as Product["category"];
 
-    const badgeRaw = get(row, "badge").toUpperCase();
+    const badgeRaw = pick(row, idx, "badge").toUpperCase();
     const badge = ALLOWED_BADGES.has(badgeRaw) ? (badgeRaw as Product["badge"]) : undefined;
 
-    const images = splitList(get(row, "images"));
+    const images = splitList(pick(row, idx, "images", "image url", "image urls", "image"));
     if (images.length === 0) continue;
+
+    // Allow explicit isNewArrival/isBestSeller columns; otherwise derive from badge.
+    const newArrivalRaw = pick(row, idx, "isNewArrival", "isnewarrival", "new arrival");
+    const bestSellerRaw = pick(row, idx, "isBestSeller", "isbestseller", "best seller");
+    const isNewArrival = newArrivalRaw ? truthy(newArrivalRaw) : badge === "NEW";
+    const isBestSeller = bestSellerRaw ? truthy(bestSellerRaw) : badge === "HOT";
 
     products.push({
       id,
@@ -124,16 +138,16 @@ export function rowsToProducts(rows: string[][]): Product[] {
         originalPriceNum && Number.isFinite(originalPriceNum) && originalPriceNum > priceNum
           ? Math.round(originalPriceNum)
           : undefined,
-      sizes: splitList(get(row, "sizes")),
-      colors: splitList(get(row, "colors")),
+      sizes: splitList(pick(row, idx, "sizes", "sizes available")),
+      colors: splitList(pick(row, idx, "colors", "colors available", "colours", "colours available")),
       images,
       badge,
-      description: get(row, "description"),
-      material: get(row, "material"),
-      fit: get(row, "fit"),
-      isNewArrival: truthy(get(row, "isNewArrival") || get(row, "isnewarrival")),
-      isBestSeller: truthy(get(row, "isBestSeller") || get(row, "isbestseller")),
-      inStock: truthy(get(row, "inStock") || get(row, "instock")),
+      description: pick(row, idx, "description"),
+      material: pick(row, idx, "material"),
+      fit: pick(row, idx, "fit", "fit type"),
+      isNewArrival,
+      isBestSeller,
+      inStock: truthy(pick(row, idx, "inStock", "instock", "in stock") || "true"),
     });
   }
 
