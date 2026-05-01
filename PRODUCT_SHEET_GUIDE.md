@@ -1,4 +1,4 @@
-# 🛍️ SECOCT — Manage Products from Google Sheets
+# 🛍️ SEPOCT — Manage Products from Google Sheets
 
 You don't need to touch any code to add, edit, or remove products. Everything
 lives in one Google Sheet. Edit the sheet → refresh the website → done.
@@ -8,7 +8,7 @@ lives in one Google Sheet. Edit the sheet → refresh the website → done.
 ## STEP 1 — Create the Google Sheet
 
 1. Open https://sheets.google.com and click **+ Blank**
-2. Rename it `SECOCT Products`
+2. Rename it `SEPOCT Products`
 3. In **Row 1**, paste these column headers (exactly as written, in this order):
 
 ```

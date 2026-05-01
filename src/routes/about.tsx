@@ -4,9 +4,9 @@ import { ShieldCheck, Sparkles, MapPin } from "lucide-react";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About — SECOCT" },
-      { name: "description", content: "SECOCT was built on one belief — Indian men deserve world-class streetwear without the world-class price tag." },
-      { property: "og:title", content: "About — SECOCT" },
+      { title: "About — SEPOCT" },
+      { name: "description", content: "SEPOCT was built on one belief — Indian men deserve world-class streetwear without the world-class price tag." },
+      { property: "og:title", content: "About — SEPOCT" },
       { property: "og:description", content: "Our story. Streetwear, on our terms." },
     ],
   }),
@@ -17,19 +17,19 @@ function About() {
   return (
     <div>
       <section className="relative h-72 md:h-96 overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1920&q=80" alt="SECOCT brand" className="absolute inset-0 h-full w-full object-cover" />
+        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1920&q=80" alt="SEPOCT brand" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-primary/70" />
         <div className="container-x relative h-full flex flex-col justify-end pb-10 text-white">
-          <p className="font-condensed uppercase tracking-[0.3em] text-sm text-white/70">SECOCT</p>
+          <p className="font-condensed uppercase tracking-[0.3em] text-sm text-white/70">SEPOCT</p>
           <h1 className="font-display text-5xl md:text-7xl">OUR STORY</h1>
         </div>
       </section>
 
       <section className="container-x py-14 max-w-3xl">
         <p className="text-lg leading-relaxed text-foreground/85">
-          SECOCT was founded with one belief — that Indian men deserve world-class streetwear without the
+          SEPOCT was founded with one belief — that Indian men deserve world-class streetwear without the
           world-class price tag. We design clothes that move with you, whether you're hitting the streets
-          of Mumbai or the lanes of Delhi. Every stitch is intentional. Every drop is curated. This is SECOCT.
+          of Mumbai or the lanes of Delhi. Every stitch is intentional. Every drop is curated. This is SEPOCT.
         </p>
       </section>
 

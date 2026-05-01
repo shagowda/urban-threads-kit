@@ -3,7 +3,7 @@ import { generateWhatsAppLink } from "@/lib/whatsapp";
 
 export function WhatsAppFloat() {
   const href = generateWhatsAppLink({
-    custom: "Hi SECOCT! I have a question about your products.",
+    custom: "Hi SEPOCT! I have a question about your products.",
   });
   return (
     <a

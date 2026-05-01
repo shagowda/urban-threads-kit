@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Heart, MessageCircle } from "lucide-react";
+import { Heart, MessageCircle, Share2 } from "lucide-react";
 import { useState } from "react";
 import type { Product } from "@/data/products";
 import { generateWhatsAppLink, inr } from "@/lib/whatsapp";
@@ -10,6 +10,29 @@ export function ProductCard({ product }: { product: Product }) {
     product.originalPrice && product.originalPrice > product.price
       ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
       : 0;
+
+  const handleShare = async () => {
+    const url = `${window.location.origin}/product/${product.slug}`;
+    const shareData = {
+      title: product.name,
+      text: `${product.name} - ${product.description}`,
+      url,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        // Fallback to copy link
+        await navigator.clipboard.writeText(url);
+        alert("Link copied to clipboard!");
+      }
+    } else {
+      // Fallback to copy link
+      await navigator.clipboard.writeText(url);
+      alert("Link copied to clipboard!");
+    }
+  };
 
   return (
     <div className="group bg-card border border-border hover:shadow-card-hover transition-shadow flex flex-col">
@@ -49,6 +72,13 @@ export function ProductCard({ product }: { product: Product }) {
           className="absolute top-2 right-2 h-8 w-8 grid place-items-center bg-card/90 hover:bg-card"
         >
           <Heart className={`h-4 w-4 ${wished ? "fill-accent text-accent" : "text-foreground"}`} />
+        </button>
+        <button
+          onClick={(e) => { e.preventDefault(); handleShare(); }}
+          aria-label="Share"
+          className="absolute top-12 right-2 h-8 w-8 grid place-items-center bg-card/90 hover:bg-card"
+        >
+          <Share2 className="h-4 w-4 text-foreground" />
         </button>
       </Link>
 

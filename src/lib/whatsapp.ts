@@ -12,7 +12,7 @@ export function generateWhatsAppLink(opts: {
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(opts.custom)}`;
   }
   const lines = [
-    "Hi SECOCT! I want to order this item.",
+    "Hi SEPOCT! I want to order this item.",
     `Product: ${opts.productName ?? ""}`,
     `Size: ${opts.size ?? "-"}`,
     `Color: ${opts.color ?? "-"}`,

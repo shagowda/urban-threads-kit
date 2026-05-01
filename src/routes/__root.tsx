@@ -33,10 +33,10 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "SECOCT — Wear the Streets. Own the Look." },
+      { title: "SEPOCT — Wear the Streets. Own the Look." },
       { name: "description", content: "Premium streetwear for the modern Indian man. Curated drops, accessible Indian pricing." },
-      { name: "author", content: "SECOCT" },
-      { property: "og:title", content: "SECOCT — Wear the Streets. Own the Look." },
+      { name: "author", content: "SEPOCT" },
+      { property: "og:title", content: "SEPOCT — Wear the Streets. Own the Look." },
       { property: "og:description", content: "Premium streetwear for the modern Indian man." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

@@ -6,7 +6,7 @@ export function Footer() {
     <footer className="bg-primary text-primary-foreground mt-20">
       <div className="container-x py-14 grid gap-10 md:grid-cols-4">
         <div>
-          <div className="font-display text-4xl tracking-wider">SECOCT</div>
+          <div className="font-display text-4xl tracking-wider">SEPOCT</div>
           <p className="mt-3 text-sm text-white/70 max-w-xs">
             Wear the streets. Own the look. Premium streetwear for the modern Indian man.
           </p>
@@ -32,7 +32,7 @@ export function Footer() {
         <div>
           <h4 className="font-condensed uppercase tracking-widest text-sm text-white/60">Connect</h4>
           <div className="mt-4 flex items-center gap-3">
-            <a href="https://instagram.com/secoct" target="_blank" rel="noreferrer" aria-label="Instagram" className="p-2 border border-white/20 hover:border-accent hover:text-accent">
+            <a href="https://www.instagram.com/sepoct.in" target="_blank" rel="noreferrer" aria-label="Instagram" className="p-2 border border-white/20 hover:border-accent hover:text-accent">
               <Instagram className="h-5 w-5" />
             </a>
             <a href="https://wa.me/917338087711" target="_blank" rel="noreferrer" aria-label="WhatsApp" className="p-2 border border-white/20 hover:border-accent hover:text-accent">
@@ -44,7 +44,7 @@ export function Footer() {
       </div>
       <div className="border-t border-white/10">
         <div className="container-x py-5 text-xs text-white/60 text-center">
-          © 2025 SECOCT. All rights reserved.
+          © 2025 SEPOCT. All rights reserved.
         </div>
       </div>
     </footer>

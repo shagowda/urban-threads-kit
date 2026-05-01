@@ -6,10 +6,10 @@ import { generateWhatsAppLink } from "@/lib/whatsapp";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — SECOCT" },
-      { name: "description", content: "Get in touch with SECOCT — WhatsApp, Instagram or email. We reply fast." },
-      { property: "og:title", content: "Contact — SECOCT" },
-      { property: "og:description", content: "Talk to the SECOCT team." },
+      { title: "Contact — SEPOCT" },
+      { name: "description", content: "Get in touch with SEPOCT — WhatsApp, Instagram or email. We reply fast." },
+      { property: "og:title", content: "Contact — SEPOCT" },
+      { property: "og:description", content: "Talk to the SEPOCT team." },
     ],
   }),
   component: Contact,
@@ -68,12 +68,12 @@ function Contact() {
               <p className="font-medium">+91 73380 87711</p>
             </div>
           </a>
-          <a href="https://instagram.com/secoct" target="_blank" rel="noreferrer"
+          <a href="https://www.instagram.com/sepoct.in" target="_blank" rel="noreferrer"
             className="flex items-center gap-4 border border-border bg-card p-5 hover:border-accent transition-colors">
             <Instagram className="h-6 w-6 text-accent" />
             <div>
               <p className="font-condensed uppercase tracking-widest text-xs text-muted-foreground">Instagram</p>
-              <p className="font-medium">@SECOCT</p>
+              <p className="font-medium">@sepoct.in</p>
             </div>
           </a>
           <a href="mailto:mrabhiyadav1330@gmail.com"

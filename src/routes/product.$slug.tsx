@@ -4,6 +4,7 @@ import { MessageCircle, Truck, X, ChevronLeft, ChevronRight, ZoomIn } from "luci
 import useEmblaCarousel from "embla-carousel-react";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductGridSkeleton, ProductsErrorState } from "@/components/ProductCardSkeleton";
+import { ShareButton } from "@/components/ShareButton";
 import { useProducts } from "@/hooks/useProducts";
 import { generateWhatsAppLink, inr } from "@/lib/whatsapp";
 
@@ -270,6 +271,14 @@ function ProductPage() {
           >
             <MessageCircle className="h-5 w-5" /> Order on WhatsApp
           </a>
+
+          <div className="mt-4 flex justify-center">
+            <ShareButton
+              url={`${window.location.origin}/product/${product.slug}`}
+              title={product.name}
+              description={product.description}
+            />
+          </div>
 
           {product.description && (
             <p className="mt-6 text-foreground/80 leading-relaxed">{product.description}</p>

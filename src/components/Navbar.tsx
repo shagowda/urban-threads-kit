@@ -20,7 +20,7 @@ export function Navbar() {
     <header className="sticky top-0 z-40 backdrop-blur bg-background/85 border-b border-border">
       <div className="container-x flex items-center justify-between h-16">
         <Link to="/" className="font-display text-3xl tracking-wider text-primary">
-          SECOCT
+          SEPOCT
         </Link>
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((l) => (
@@ -37,7 +37,7 @@ export function Navbar() {
         </nav>
         <div className="flex items-center gap-3">
           <a
-            href="https://instagram.com/secoct"
+            href="https://www.instagram.com/sepoct.in"
             target="_blank"
             rel="noreferrer"
             className="hidden md:inline-flex p-2 hover:text-accent transition-colors"
@@ -58,7 +58,7 @@ export function Navbar() {
       {open && (
         <div className="fixed inset-0 z-50 bg-primary text-primary-foreground md:hidden flex flex-col">
           <div className="flex items-center justify-between h-16 px-4 border-b border-white/10">
-            <span className="font-display text-3xl tracking-wider">SECOCT</span>
+            <span className="font-display text-3xl tracking-wider">SEPOCT</span>
             <button onClick={() => setOpen(false)} aria-label="Close menu" className="p-2">
               <X className="h-6 w-6" />
             </button>
@@ -76,7 +76,7 @@ export function Navbar() {
               </Link>
             ))}
             <a
-              href="https://instagram.com/secoct"
+              href="https://www.instagram.com/sepoct.in"
               target="_blank"
               rel="noreferrer"
               className="font-condensed uppercase tracking-widest mt-6 inline-flex items-center gap-2"
