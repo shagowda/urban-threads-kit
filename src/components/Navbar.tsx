@@ -20,7 +20,7 @@ export function Navbar() {
     <header className="sticky top-0 z-40 backdrop-blur bg-background/85 border-b border-border">
       <div className="container-x flex items-center justify-between h-16">
         <Link to="/" className="font-display text-3xl tracking-wider text-primary">
-          SEPOCT
+          AXURO
         </Link>
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((l) => (
@@ -37,7 +37,7 @@ export function Navbar() {
         </nav>
         <div className="flex items-center gap-3">
           <a
-            href="https://www.instagram.com/sepoct.in"
+            href="https://instagram.com/axuro"
             target="_blank"
             rel="noreferrer"
             className="hidden md:inline-flex p-2 hover:text-accent transition-colors"
@@ -76,7 +76,7 @@ export function Navbar() {
               </Link>
             ))}
             <a
-              href="https://www.instagram.com/sepoct.in"
+              href="https://instagram.com/axuro"
               target="_blank"
               rel="noreferrer"
               className="font-condensed uppercase tracking-widest mt-6 inline-flex items-center gap-2"

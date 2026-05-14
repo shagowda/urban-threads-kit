@@ -32,12 +32,12 @@ export const products: Product[] = [
     isNewArrival: true, inStock: true,
   },
   {
-    id: "tshirt-002", slug: "sepoct-graphic-tee", name: "SEPOCT Graphic Tee",
+    id: "tshirt-002", slug: "axuro-graphic-tee", name: "AXURO Graphic Tee",
     category: "t-shirts", price: 699, originalPrice: 999,
     sizes: ["S","M","L","XL"], colors: ["White","Black"],
     images: [u("photo-1521572163474-6864f9cf17ab"), u("photo-1618354691373-d851c5c3a990")],
     badge: "HOT",
-    description: "Signature SEPOCT chest print on premium cotton. The everyday hero of your rotation.",
+    description: "Signature AXURO chest print on premium cotton. The everyday hero of your rotation.",
     material: "100% Cotton, 200 GSM", fit: "Regular",
     isBestSeller: true, inStock: true,
   },
@@ -222,7 +222,7 @@ export const products: Product[] = [
     sizes: ["One Size"], colors: ["Black","Navy","White"],
     images: [u("photo-1588850561407-ed78c282e89b"), u("photo-1521369909029-2afed882baee")],
     badge: "HOT",
-    description: "Classic 6-panel trucker with curved brim. Embroidered SEPOCT logo.",
+    description: "Classic 6-panel trucker with curved brim. Embroidered AXURO logo.",
     material: "Cotton / Mesh", fit: "Adjustable",
     isBestSeller: true, inStock: true,
   },
@@ -231,7 +231,7 @@ export const products: Product[] = [
     category: "accessories", price: 599,
     sizes: ["One Size"], colors: ["Natural"],
     images: [u("photo-1591561954557-26941169b49e"), u("photo-1544816155-12df9643f363")],
-    description: "Heavy 14oz canvas tote with bold SEPOCT print.",
+    description: "Heavy 14oz canvas tote with bold AXURO print.",
     material: "Heavy Canvas", fit: "Standard",
     inStock: true,
   },
@@ -266,7 +266,7 @@ export const categories = [
 ].map((c) => ({ ...c, image: `https://images.unsplash.com/${c.image}?auto=format&fit=crop&w=800&q=80` }));
 
 export const categoryDescriptions: Record<string, string> = {
-  "t-shirts": "Heavyweight tees, oversized cuts and signature graphics. The foundation of every SEPOCT fit.",
+  "t-shirts": "Heavyweight tees, oversized cuts and signature graphics. The foundation of every AXURO fit.",
   "shirts": "From linen overshirts to crisp oxfords — shirts that work day, night and everything in between.",
   "jeans": "Honest denim in straight, slim and baggy fits. Built to break in, designed to last.",
   "jackets": "Statement outerwear for Indian streets — bombers, truckers, vests and tech shells.",

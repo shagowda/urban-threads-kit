@@ -7,9 +7,9 @@ import { useProducts } from "@/hooks/useProducts";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "SEPOCT — Wear the Streets. Own the Look." },
+      { title: "AXURO — Wear the Streets. Own the Look." },
       { name: "description", content: "Premium streetwear for the modern Indian man. Shop new drops, best sellers and accessories." },
-      { property: "og:title", content: "SEPOCT — Wear the Streets. Own the Look." },
+      { property: "og:title", content: "AXURO — Wear the Streets. Own the Look." },
       { property: "og:description", content: "Premium streetwear for the modern Indian man." },
     ],
   }),
@@ -33,7 +33,7 @@ function Index() {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-primary/85 via-primary/60 to-primary/30" />
         <div className="relative container-x h-full flex flex-col justify-end pb-16 md:pb-24 text-white">
-          <span className="font-condensed uppercase tracking-[0.3em] text-sm text-white/80">SEPOCT — DROP 01</span>
+          <span className="font-condensed uppercase tracking-[0.3em] text-sm text-white/80">AXURO — DROP 01</span>
           <h1 className="font-display text-5xl sm:text-7xl md:text-8xl leading-[0.95] mt-4 max-w-3xl">
             WEAR THE STREETS.<br />OWN THE LOOK.
           </h1>
@@ -128,7 +128,7 @@ function Index() {
           </div>
           <div className="text-white/80 text-base md:text-lg leading-relaxed">
             <p>
-              SEPOCT was built on one belief — Indian men deserve world-class streetwear without the world-class price tag.
+              AXURO was built on one belief — Indian men deserve world-class streetwear without the world-class price tag.
               Every drop is curated. Every stitch is intentional. This is streetwear, on our terms.
             </p>
             <Link to="/about" className="btn-accent mt-6">About Us</Link>
@@ -140,7 +140,7 @@ function Index() {
       <section className="container-x py-16">
         <div className="text-center mb-8">
           <p className="section-label">Follow</p>
-          <h2 className="font-display text-4xl md:text-5xl mt-2">@sepoct.in</h2>
+          <h2 className="font-display text-4xl md:text-5xl mt-2">@AXURO</h2>
         </div>
         <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
           {[
@@ -151,13 +151,13 @@ function Index() {
             "photo-1551028719-00167b16eac5",
             "photo-1602810318383-e386cc2a3ccf",
           ].map((id) => (
-            <a key={id} href="https://www.instagram.com/sepoct.in" target="_blank" rel="noreferrer" className="block aspect-square overflow-hidden bg-muted">
+            <a key={id} href="https://instagram.com/axuro" target="_blank" rel="noreferrer" className="block aspect-square overflow-hidden bg-muted">
               <img src={`https://images.unsplash.com/${id}?auto=format&fit=crop&w=600&q=80`} alt="Instagram post" className="h-full w-full object-cover hover:scale-105 transition-transform duration-500" />
             </a>
           ))}
         </div>
         <div className="text-center mt-8">
-          <a href="https://www.instagram.com/sepoct.in" target="_blank" rel="noreferrer" className="btn-outline">Follow on Instagram</a>
+          <a href="https://instagram.com/axuro" target="_blank" rel="noreferrer" className="btn-outline">Follow on Instagram</a>
         </div>
       </section>
     </div>

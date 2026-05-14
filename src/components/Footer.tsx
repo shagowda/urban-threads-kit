@@ -21,7 +21,7 @@ export function Footer() {
     <footer className="bg-primary text-primary-foreground mt-20">
       <div className="container-x py-14 grid gap-10 md:grid-cols-4">
         <div>
-          <div className="font-display text-4xl tracking-wider">SEPOCT</div>
+          <div className="font-display text-4xl tracking-wider">AXURO</div>
           <p className="mt-3 text-sm text-white/70 max-w-xs">
             Wear the streets. Own the look. Premium streetwear for the modern Indian man.
           </p>
@@ -46,7 +46,7 @@ export function Footer() {
         <div>
           <h4 className="font-condensed uppercase tracking-widest text-sm text-white/60">Connect</h4>
           <div className="mt-4 flex items-center gap-3">
-            <a href="https://instagram.com/sepoct" target="_blank" rel="noreferrer" aria-label="Instagram" className="p-2 border border-white/20 hover:border-accent hover:text-accent">
+            <a href="https://instagram.com/axuro" target="_blank" rel="noreferrer" aria-label="Instagram" className="p-2 border border-white/20 hover:border-accent hover:text-accent">
               <Instagram className="h-5 w-5" />
             </a>
             <a href="https://wa.me/917338087711" target="_blank" rel="noreferrer" aria-label="WhatsApp" className="p-2 border border-white/20 hover:border-accent hover:text-accent">
@@ -58,7 +58,7 @@ export function Footer() {
       </div>
       <div className="border-t border-white/10">
         <div className="container-x py-5 text-xs text-white/60 text-center">
-          © 2025 SEPOCT. All rights reserved.
+          © 2025 AXURO. All rights reserved.
         </div>
       </div>
       <div ref={contactRef} className="container-x py-6 flex flex-col items-center gap-4">
@@ -102,7 +102,7 @@ export function Footer() {
                  Email
               </a>
               <a
-                href="https://wa.me/917022917031?text=Hi%20Shashank!%20I%20saw%20your%20work%20on%20SEPOCT%20website.%20I%27m%20interested%20in%20getting%20a%20website%20built.%20Can%20we%20connect?"
+                href="https://wa.me/917022917031?text=Hi%20Shashank!%20I%20saw%20your%20work%20on%20AXURO%20website.%20I%27m%20interested%20in%20getting%20a%20website%20built.%20Can%20we%20connect?"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex w-full items-center justify-center rounded-full border border-white/20 bg-white/5 px-4 py-3 text-sm text-white transition hover:border-white/40 hover:bg-white/10"

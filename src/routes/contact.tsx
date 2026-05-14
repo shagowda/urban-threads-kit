@@ -6,10 +6,10 @@ import { generateWhatsAppLink } from "@/lib/whatsapp";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — SEPOCT" },
-      { name: "description", content: "Get in touch with SEPOCT — WhatsApp, Instagram or email. We reply fast." },
-      { property: "og:title", content: "Contact — SEPOCT" },
-      { property: "og:description", content: "Talk to the SEPOCT team." },
+      { title: "Contact — AXURO" },
+      { name: "description", content: "Get in touch with AXURO — WhatsApp, Instagram or email. We reply fast." },
+      { property: "og:title", content: "Contact — AXURO" },
+      { property: "og:description", content: "Talk to the AXURO team." },
     ],
   }),
   component: Contact,
@@ -60,7 +60,7 @@ function Contact() {
         </form>
 
         <aside className="space-y-5">
-          <a href={generateWhatsAppLink({ custom: "Hi SECOCT!" })} target="_blank" rel="noreferrer"
+          <a href={generateWhatsAppLink({ custom: "Hi AXURO!" })} target="_blank" rel="noreferrer"
             className="flex items-center gap-4 border border-border bg-card p-5 hover:border-accent transition-colors">
             <MessageCircle className="h-6 w-6 text-whatsapp" />
             <div>
@@ -68,12 +68,12 @@ function Contact() {
               <p className="font-medium">+91 73380 87711</p>
             </div>
           </a>
-          <a href="https://www.instagram.com/sepoct.in" target="_blank" rel="noreferrer"
+          <a href="https://www.instagram.com/axuro.in" target="_blank" rel="noreferrer"
             className="flex items-center gap-4 border border-border bg-card p-5 hover:border-accent transition-colors">
             <Instagram className="h-6 w-6 text-accent" />
             <div>
               <p className="font-condensed uppercase tracking-widest text-xs text-muted-foreground">Instagram</p>
-              <p className="font-medium">@sepoct.in</p>
+              <p className="font-medium">@axuro.in</p>
             </div>
           </a>
           <a href="mailto:mrabhiyadav1330@gmail.com"
