@@ -1,4 +1,4 @@
-export const WHATSAPP_NUMBER = "917338087711";
+export const WHATSAPP_NUMBER = "916364628003";
 
 export function generateWhatsAppLink(opts: {
   productName?: string;
