@@ -25,25 +25,106 @@ function Index() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative h-[88vh] min-h-[560px] w-full overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&w=1920&q=80"
-          alt="Stylish streetwear model on Indian streets"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/85 via-primary/60 to-primary/30" />
-        <div className="relative container-x h-full flex flex-col justify-end pb-16 md:pb-24 text-white">
-          <span className="font-condensed uppercase tracking-[0.3em] text-sm text-white/80">AXURO — DROP 01</span>
-          <h1 className="font-display text-5xl sm:text-7xl md:text-8xl leading-[0.95] mt-4 max-w-3xl">
-            WEAR THE STREETS.<br />OWN THE LOOK.
-          </h1>
-          <p className="mt-4 max-w-xl text-white/85 text-base md:text-lg">
-            Premium streetwear for the modern Indian man. Heavyweight tees, statement jackets, honest denim.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link to="/shop" className="btn-accent">Shop New Arrivals</Link>
-            <Link to="/shop" className="btn-outline" style={{ borderColor: "white", color: "white" }}>
-              View Best Sellers
+      <section className="relative overflow-hidden bg-[#0A1F44] bg-gradient-to-br from-[#0A1F44] via-[#071630] to-black text-white">
+        <div className="container-x mx-auto px-4 py-10 md:py-14">
+          <div className="grid min-h-[250px] md:min-h-[400px] grid-cols-1 gap-6 md:grid-cols-[1.15fr_0.85fr] items-center">
+            <div className="relative flex flex-col justify-center overflow-hidden rounded-[24px] bg-[rgba(255,255,255,0.04)] p-6 shadow-[0_20px_80px_-42px_rgba(0,0,0,0.6)] backdrop-blur-sm md:p-12">
+              <div className="animate-fade-up">
+                <span className="font-condensed uppercase tracking-[0.35em] text-sm text-white/70">AXURO — STREETWEAR DROP</span>
+                <h1 className="font-display text-4xl sm:text-5xl md:text-6xl leading-tight mt-4 text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
+                  WEAR THE STREETS.
+                </h1>
+                <p className="mt-4 max-w-xl text-base sm:text-lg text-white/85 leading-relaxed drop-shadow-[0_5px_20px_rgba(0,0,0,0.25)]">
+                  New collection just dropped — oversized tees, street jackets & more.
+                </p>
+                <div className="mt-8">
+                  <Link
+                    to="/shop"
+                    className="inline-flex items-center justify-center rounded-full bg-white px-7 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-[#0A1F44] shadow-lg shadow-black/10 transition duration-300 hover:-translate-y-0.5 hover:bg-slate-100"
+                  >
+                    Shop New Arrivals →
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative overflow-hidden rounded-[24px] bg-black/10 shadow-[0_24px_90px_-54px_rgba(0,0,0,0.6)]">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.1),_transparent_45%)]" />
+              <img
+                src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=800"
+                alt="Stylish man in streetwear"
+                className="relative h-[320px] w-full object-cover md:h-full"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="container-x mx-auto px-4 pb-10">
+          <div className="grid gap-4 md:grid-cols-3">
+            <Link
+              to="/shop"
+              className="group flex h-full flex-col overflow-hidden rounded-[12px] bg-[#0D2150] p-6 text-white transition duration-300 hover:scale-[1.02]"
+            >
+              <div className="flex flex-1 flex-col justify-between gap-4">
+                <div>
+                  <h2 className="font-display text-2xl font-bold drop-shadow-[0_6px_18px_rgba(0,0,0,0.45)]">New Arrivals</h2>
+                  <p className="mt-3 text-sm text-white/80">Fresh drops every Friday</p>
+                </div>
+                <div className="mt-4 inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition group-hover:bg-white group-hover:text-[#0A1F44]">
+                  Shop Now
+                </div>
+              </div>
+              <div className="mt-6 flex items-end justify-end">
+                <img
+                  src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400"
+                  alt="New arrivals t-shirt"
+                  className="h-32 w-32 rounded-[12px] object-cover"
+                />
+              </div>
+            </Link>
+
+            <Link
+              to="/shop"
+              className="group flex h-full flex-col overflow-hidden rounded-[12px] bg-[#12131A] p-6 text-white transition duration-300 hover:scale-[1.02]"
+            >
+              <div className="flex flex-1 flex-col justify-between gap-4">
+                <div>
+                  <h2 className="font-display text-2xl font-bold drop-shadow-[0_6px_18px_rgba(0,0,0,0.45)]">Best Sellers</h2>
+                  <p className="mt-3 text-sm text-white/80">Most loved styles this season</p>
+                </div>
+                <div className="mt-4 inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition group-hover:bg-white group-hover:text-[#0A1F44]">
+                  Shop Now
+                </div>
+              </div>
+              <div className="mt-6 flex items-end justify-end">
+                <img
+                  src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=400"
+                  alt="Best sellers jeans"
+                  className="h-32 w-32 rounded-[12px] object-cover"
+                />
+              </div>
+            </Link>
+
+            <Link
+              to="/shop"
+              className="group flex h-full flex-col overflow-hidden rounded-[12px] bg-[#5B1222] p-6 text-white transition duration-300 hover:scale-[1.02]"
+            >
+              <div className="flex flex-1 flex-col justify-between gap-4">
+                <div>
+                  <h2 className="font-display text-2xl font-bold drop-shadow-[0_6px_18px_rgba(0,0,0,0.45)]">Limited Stock</h2>
+                  <p className="mt-3 text-sm text-white/80">Grab before it sells out</p>
+                </div>
+                <div className="mt-4 inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition group-hover:bg-white group-hover:text-[#0A1F44]">
+                  Shop Now
+                </div>
+              </div>
+              <div className="mt-6 flex items-end justify-end">
+                <img
+                  src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=400"
+                  alt="Accessories on display"
+                  className="h-32 w-32 rounded-[12px] object-cover"
+                />
+              </div>
             </Link>
           </div>
         </div>
