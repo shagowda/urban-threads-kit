@@ -37,7 +37,7 @@ export function Navbar() {
         </nav>
         <div className="flex items-center gap-3">
           <a
-            href="https://instagram.com/axuro"
+            href="https://instagram.com/axuro.in"
             target="_blank"
             rel="noreferrer"
             className="hidden md:inline-flex p-2 hover:text-accent transition-colors"
@@ -76,7 +76,7 @@ export function Navbar() {
               </Link>
             ))}
             <a
-              href="https://instagram.com/axuro"
+              href="https://instagram.com/axuro.in"
               target="_blank"
               rel="noreferrer"
               className="font-condensed uppercase tracking-widest mt-6 inline-flex items-center gap-2"

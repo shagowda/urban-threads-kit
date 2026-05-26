@@ -46,7 +46,7 @@ export function Footer() {
         <div>
           <h4 className="font-condensed uppercase tracking-widest text-sm text-white/60">Connect</h4>
           <div className="mt-4 flex items-center gap-3">
-            <a href="https://instagram.com/axuro" target="_blank" rel="noreferrer" aria-label="Instagram" className="p-2 border border-white/20 hover:border-accent hover:text-accent">
+            <a href="https://instagram.com/axuro.in" target="_blank" rel="noreferrer" aria-label="Instagram" className="p-2 border border-white/20 hover:border-accent hover:text-accent">
               <Instagram className="h-5 w-5" />
             </a>
             <a href="https://wa.me/916364628003" target="_blank" rel="noreferrer" aria-label="WhatsApp" className="p-2 border border-white/20 hover:border-accent hover:text-accent">

@@ -423,13 +423,13 @@ function Index() {
             "photo-1551028719-00167b16eac5",
             "photo-1602810318383-e386cc2a3ccf",
           ].map((id) => (
-            <a key={id} href="https://instagram.com/axuro" target="_blank" rel="noreferrer" className="block aspect-square overflow-hidden bg-muted">
+            <a key={id} href="https://instagram.com/axuro.in" target="_blank" rel="noreferrer" className="block aspect-square overflow-hidden bg-muted">
               <img src={`https://images.unsplash.com/${id}?auto=format&fit=crop&w=600&q=80`} alt="Instagram post" className="h-full w-full object-cover hover:scale-105 transition-transform duration-500" />
             </a>
           ))}
         </div>
         <div className="text-center mt-8">
-          <a href="https://instagram.com/axuro" target="_blank" rel="noreferrer" className="btn-outline">Follow on Instagram</a>
+          <a href="https://instagram.com/axuro.in" target="_blank" rel="noreferrer" className="btn-outline">Follow on Instagram</a>
         </div>
       </section>
     </div>
