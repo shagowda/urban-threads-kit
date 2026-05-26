@@ -1,3 +1,4 @@
+import React, { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductGridSkeleton, ProductsErrorState } from "@/components/ProductCardSkeleton";
@@ -15,6 +16,196 @@ export const Route = createFileRoute("/")({
   }),
   component: Index,
 });
+
+const slides = [
+  {
+    id: 1,
+    badge: "NEW DROP 🔥",
+    headline: "WEAR THE STREETS.",
+    sub: "New oversized tees & street jackets just landed",
+    img: "https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=1400",
+    accent: "#3AB7FF",
+    cta: "/shop",
+  },
+  {
+    id: 2,
+    badge: "BEST SELLERS ⭐",
+    headline: "MOST LOVED STYLES.",
+    sub: "Our top-selling pieces — grab yours before stock runs out",
+    img: "https://images.unsplash.com/photo-1617137968427-85924c800a22?w=1400",
+    accent: "#c9a84c",
+    cta: "/shop",
+  },
+  {
+    id: 3,
+    badge: "TRENDING NOW 📈",
+    headline: "OWN THE LOOK.",
+    sub: "Varsity bombers, denim truckers & tech windbreakers",
+    img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=1400",
+    accent: "#E63946",
+    cta: "/shop",
+  },
+  {
+    id: 4,
+    badge: "LIMITED TIME 🏷️",
+    headline: "UP TO 40% OFF.",
+    sub: "Selected styles on sale — today only. Don't miss out.",
+    img: "https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=1400",
+    accent: "#2d6a4f",
+    cta: "/shop",
+  },
+];
+
+function Carousel() {
+  const total = slides.length;
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const startRef = useRef<number | null>(null);
+  const elapsedRef = useRef(0);
+  const touchStartX = useRef<number | null>(null);
+  const DURATION = 5000;
+
+  const next = (by = 1) => {
+    setIndex((i) => (i + by + total) % total);
+    elapsedRef.current = 0;
+    startRef.current = null;
+  };
+  const prev = () => next(-1);
+
+  // animation loop to track elapsed time for progress bar & auto-advance
+  useEffect(() => {
+    function step(ts: number) {
+      if (paused) {
+        rafRef.current = requestAnimationFrame(step);
+        return;
+      }
+      if (!startRef.current) startRef.current = ts;
+      const dt = ts - startRef.current;
+      elapsedRef.current = dt;
+      if (dt >= DURATION) {
+        next(1);
+        startRef.current = ts;
+        elapsedRef.current = 0;
+      }
+      rafRef.current = requestAnimationFrame(step);
+    }
+    rafRef.current = requestAnimationFrame(step);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paused]);
+
+  // reset timer when index changes (manual nav)
+  useEffect(() => {
+    startRef.current = null;
+    elapsedRef.current = 0;
+  }, [index]);
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const onTouchMove = (e: React.TouchEvent) => {
+    // noop for now - could implement visual drag
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current == null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    if (dx > 60) prev();
+    else if (dx < -60) next(1);
+    touchStartX.current = null;
+  };
+
+  const progress = Math.min(1, (elapsedRef.current || 0) / DURATION);
+
+  return (
+    <div
+      ref={containerRef}
+      className="carousel relative w-full select-none"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
+      <div className="carousel-viewport overflow-hidden w-full">
+        <div
+          className="carousel-track flex w-full will-change-transform"
+          style={{
+            width: `${total * 100}%`,
+            transform: `translateX(-${(index * 100) / total}%)`,
+            transition: `transform 600ms ease`,
+            height: "550px",
+          }}
+        >
+          {slides.map((s, i) => (
+            <div key={s.id} className="carousel-slide relative w-[100%] flex-shrink-0">
+              <img
+                key={s.id + "img-" + index}
+                loading="lazy"
+                src={s.img}
+                alt={s.headline}
+                className="absolute inset-0 h-full w-full object-cover"
+                style={{ transformOrigin: "center", height: "100%" }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
+
+              <div className="container-x relative z-10 h-full flex items-center">
+                <div className="max-w-[720px] py-8 md:py-0">
+                  <div key={index} className="animate-fade-up">
+                    <span style={{ background: s.accent }} className="inline-block rounded-full px-3 py-1 text-xs font-semibold text-white">
+                      {s.badge}
+                    </span>
+                    <h2 className="font-display mt-4 text-4xl md:text-[56px] leading-tight text-white uppercase">{s.headline}</h2>
+                    <p className="mt-4 text-white text-base max-w-[500px]">{s.sub}</p>
+                    <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+                      <Link to={s.cta} className="inline-flex items-center justify-center rounded-md px-6 py-3 text-sm font-semibold text-white" style={{ background: s.accent }}>
+                        {i === 0 ? "Shop New Arrivals →" : i === 1 ? "Shop Best Sellers →" : i === 2 ? "Shop Jackets →" : "Shop Sale →"}
+                      </Link>
+                      <Link to="/shop" className="inline-flex items-center justify-center rounded-md border border-white/60 px-6 py-3 text-sm text-white">
+                        View All
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Arrows */}
+      <button aria-label="Previous" onClick={prev} className="carousel-arrow left hidden md:flex">
+        ←
+      </button>
+      <button aria-label="Next" onClick={() => next(1)} className="carousel-arrow right hidden md:flex">
+        →
+      </button>
+
+      {/* Dots */}
+      <div className="absolute left-1/2 bottom-14 z-20 -translate-x-1/2 flex items-center gap-3">
+        {slides.map((s, i) => (
+          <button
+            key={s.id}
+            onClick={() => setIndex(i)}
+            className={`dot transition-all duration-300 ${i === index ? "dot-active" : ""}`}
+            style={{ background: i === index ? s.accent : "white" }}
+            aria-label={`Go to slide ${i + 1}`}
+          />
+        ))}
+      </div>
+
+      {/* Progress bar */}
+      <div className="absolute left-0 bottom-0 w-full z-20">
+        <div className="h-1 w-full bg-white/10">
+          <div className="h-1" style={{ width: `${progress * 100}%`, background: slides[index].accent, transition: paused ? "none" : "width 120ms linear" }} />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function Index() {
   const { products, loading, error } = useProducts();
