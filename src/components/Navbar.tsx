@@ -19,13 +19,12 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-40 backdrop-blur bg-background/85 border-b border-border">
       <div className="container-x flex items-center justify-between h-16">
-        <Link to="/" className="flex items-center gap-3 font-display text-3xl tracking-wider text-primary">
+        <Link to="/" className="flex items-center gap-3 font-display text-3xl tracking-wider text-primary" aria-label="Home">
           <img
             src="/images/logo.png"
             alt="AXURO"
-            className="h-8 w-auto object-contain"
+            className="h-12 w-auto object-contain"
           />
-          AXURO
         </Link>
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((l) => (
@@ -63,7 +62,9 @@ export function Navbar() {
       {open && (
         <div className="fixed inset-0 z-50 bg-primary text-primary-foreground md:hidden flex flex-col">
           <div className="flex items-center justify-between h-16 px-4 border-b border-white/10">
-            <span className="font-display text-3xl tracking-wider">SEPOCT</span>
+            <Link to="/" onClick={() => setOpen(false)} className="flex items-center" aria-label="Home">
+              <img src="/images/logo.png" alt="AXURO" className="h-10 w-auto object-contain" />
+            </Link>
             <button onClick={() => setOpen(false)} aria-label="Close menu" className="p-2">
               <X className="h-6 w-6" />
             </button>
