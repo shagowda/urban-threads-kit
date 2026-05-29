@@ -24,7 +24,6 @@ export function Navbar() {
             src="/images/logo.png"
             alt="AXURO"
             className="h-8 w-auto object-contain"
-            style={{ filter: "invert(1)" }}
           />
           AXURO
         </Link>
