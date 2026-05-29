@@ -19,7 +19,13 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-40 backdrop-blur bg-background/85 border-b border-border">
       <div className="container-x flex items-center justify-between h-16">
-        <Link to="/" className="font-display text-3xl tracking-wider text-primary">
+        <Link to="/" className="flex items-center gap-3 font-display text-3xl tracking-wider text-primary">
+          <img
+            src="/images/logo.png"
+            alt="AXURO"
+            className="h-8 w-auto object-contain"
+            style={{ filter: "invert(1)" }}
+          />
           AXURO
         </Link>
         <nav className="hidden md:flex items-center gap-8">
